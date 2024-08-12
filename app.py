@@ -57,7 +57,16 @@ def allowed_file(filename):
 def hello_world():
     return "<p>Hello, World!</p>"
 
-
+"""
+    @api {post} /logintoken Create Token
+    @apiName CreateToken
+    @apiGroup Authentication
+    @apiParam {String} email User's email.
+    @apiParam {String} password User's password.
+    @apiSuccess {String} email User's email.
+    @apiSuccess {String} access_token Access token for authentication.
+    @apiError (401 Unauthorized) {String} error Error message for unauthorized access.
+"""
 @api.route('/logintoken', methods=["POST"])
 def create_token():
     email = request.json.get("email", None)
@@ -82,6 +91,20 @@ def create_token():
     #return response
 
 
+"""
+    @api {post} /signup Create a new user
+    @apiName SignupUser
+    @apiGroup User
+    @apiParam {String} name Name of the user.
+    @apiParam {String} email Email of the user.
+    @apiParam {String} password Password of the user.
+    @apiParam {String} about About information of the user.
+    @apiSuccess {String} name Name of the newly created user.
+    @apiSuccess {Number} id ID of the newly created user.
+    @apiSuccess {String} email Email of the newly created user.
+    @apiSuccess {String} about About information of the newly created user.
+    @apiError (409) {String} error Error message indicating that the email already exists.
+"""
 @api.route("/signup", methods=["POST"])
 def signup():
     name = request.json["name"]
@@ -121,12 +144,13 @@ def refresh_expiring_jwts(response):
                 response.data = json.dumps(data)
         return response
     except (RuntimeError, KeyError):
+        # Case where there is not a valid JWT. Just return the original respone
         return response
 
 
 @api.route("/logout", methods=["POST"])
 def logout():
-    response = jsonify({"msg": "Logout Successful"})
+    response = jsonify({"msg": "logout successful"})
     unset_jwt_cookies(response)
     return response
 
