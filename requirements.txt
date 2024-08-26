@@ -1,0 +1,6 @@
+fastapi
+pydantic
+ultralytics
+werkzeug
+firebase_admin
+requests
